@@ -110,6 +110,19 @@ body {
     letter-spacing: 1px;
 }
 
+.location-text {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
 /* =========================================
    4. CARDS (Widget System)
    ========================================= */

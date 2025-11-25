@@ -13,6 +13,7 @@ const CONFIG = {
     description: "YOUR_DESCRIPTION_HERE",
     aliveText: "I have been alive for",
     birthdate: "YYYY-MM-DD", // YYYY-MM-DD format
+    location: "City, Country",
 
     // 2. API KEYS & IDS
     discordID: "YOUR_DISCORD_USER_ID",

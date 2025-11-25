@@ -54,6 +54,15 @@ if (muteBtn) {
     });
 }
 
+// Set Location
+    if (CONFIG.location) {
+        const locEl = document.getElementById('location-display');
+        if (locEl) {
+            locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${CONFIG.location}`;
+            locEl.style.display = 'flex'; // Make visible
+        }
+    }
+
 /* =========================================
    2. LAST.FM WIDGET
    ========================================= */
