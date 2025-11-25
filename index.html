@@ -10,24 +10,106 @@
 </head>
 <body>
 
-    <div class="container">
+    <div id="overlay">
+        <div class="enter-text">click to enter</div>
+    </div>
+
+    <video id="bg-video" loop muted playsinline>
+        <source src="assets/bg.mp4" type="video/mp4">
+    </video>
+
+    <audio id="bg-audio" loop>
+        <source src="assets/music.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container" id="content-card">
+        
         <img src="assets/pfp.png" alt="Profile" class="profile-pic">
         <h1 class="username">tsukiya</h1>
         <p class="bio">Civil Eng Student @ VUT. Majoring in Procrastination & osu! Sometimes I race RC cars.</p>
 
-        <div class="links">
-            <a href="https://discord.com/users/278137133183795201" target="_blank" class="link-item"><i class="fab fa-discord"></i> Discord</a>
-            <a href="https://youtube.com/@iamtsukiya" target="_blank" class="link-item"><i class="fab fa-youtube"></i> YouTube</a>
-            <a href="https://open.spotify.com/user/31ohtwyzxgce7krfnmehklwfxii4" target="_blank" class="link-item"><i class="fab fa-spotify"></i> Spotify</a>
-            <a href="https://instagram.com/hujervojtech" target="_blank" class="link-item"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="https://x.com/iamtsukiya" target="_blank" class="link-item"><i class="fab fa-x-twitter"></i> X</a>
-            <a href="https://soundcloud.com/iamtsukiya" target="_blank" class="link-item"><i class="fab fa-soundcloud"></i> SoundCloud</a>
-            <a href="https://twitch.tv/iamtsukiya" target="_blank" class="link-item"><i class="fab fa-twitch"></i> Twitch</a>
-            <a href="https://steamcommunity.com/id/iamtsukiya" target="_blank" class="link-item"><i class="fab fa-steam"></i> Steam</a>
-            <a href="https://github.com/iamtsukiya" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://osu.ppy.sh/users/15894115" target="_blank" class="link-item"><i class="fas fa-music"></i> osu!</a>
-        </div>
-    </div>
+        <div class="grid-row">
 
+            <a href="https://discord.com/users/278137133183795201" target="_blank" class="card discord-hero">
+                <div class="card-bg-icon"><i class="fa-brands fa-discord"></i></div>
+                
+                <div class="card-flex">
+                    <div class="avatar-wrapper">
+                        <img src="assets/pfp.png" alt="Discord Avatar" class="card-avatar">
+                        <div id="discord-status-dot" class="status-dot offline"></div>
+                    </div>
+
+                    <div class="card-info">
+                        <span id="discord-username" class="card-title">Tsukiya</span>
+                        <span id="discord-activity" class="card-detail">Loading...</span>
+                        <span id="discord-subtext" class="card-subtext"></span> 
+                    </div>
+
+                    <img id="discord-asset" src="" alt="" class="card-asset" style="display: none;">
+                </div>
+            </a>
+
+            <a href="https://www.last.fm/user/iamtsukiya" target="_blank" class="card widget-hero lastfm-card">
+                <div class="card-watermark"><i class="fa-brands fa-lastfm"></i></div>
+
+                <div class="card-flex">
+                    <div class="avatar-wrapper">
+                        <img src="assets/pfp.png" alt="LastFM" id="lf-avatar" class="card-avatar">
+                    </div>
+                    
+                    <div class="card-info">
+                        <span class="card-title">iamtsukiya</span>
+                        <span class="card-detail" id="lf-stats">Loading stats...</span>
+                        
+                        <div class="lastfm-pill-btn" id="lf-action">
+                            View Profile
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div> 
+        <div class="links">
+            <a href="https://discord.com/users/278137133183795201" target="_blank" class="link-item" title="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://youtube.com/@iamtsukiya" target="_blank" class="link-item" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://open.spotify.com/user/31ohtwyzxgce7krfnmehklwfxii4" target="_blank" class="link-item" title="Spotify">
+                <i class="fab fa-spotify"></i>
+            </a>
+            <a href="https://instagram.com/hujervojtech" target="_blank" class="link-item" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/iamtsukiya" target="_blank" class="link-item" title="X (Twitter)">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://soundcloud.com/iamtsukiya" target="_blank" class="link-item" title="SoundCloud">
+                <i class="fab fa-soundcloud"></i>
+            </a>
+            <a href="https://twitch.tv/iamtsukiya" target="_blank" class="link-item" title="Twitch">
+                <i class="fab fa-twitch"></i>
+            </a>
+            <a href="https://steamcommunity.com/id/iamtsukiya" target="_blank" class="link-item" title="Steam">
+                <i class="fab fa-steam"></i>
+            </a>
+            <a href="https://github.com/iamtsukiya" target="_blank" class="link-item" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://osu.ppy.sh/users/15894115" target="_blank" class="link-item" title="osu!">
+                <i class="fas fa-music"></i>
+            </a>
+        </div>
+
+        <div class="footer">
+            <span id="mute-btn" style="cursor: pointer; font-size: 1.2rem; margin-top: 20px; display: inline-block;">
+                <i class="fa-solid fa-volume-high"></i>
+            </span>
+        </div>
+
+    </div> 
+    <script src="script.js" defer></script>
 </body>
+ 
 </html>
