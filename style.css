@@ -71,6 +71,7 @@ body {
 /* =========================================
    3. LAYOUT & PROFILE
    ========================================= */
+/* Main Content Card */
 .container {
     text-align: center;
     width: 100%;
@@ -79,6 +80,10 @@ body {
     z-index: 10;
     opacity: 0;
     transition: opacity 1s ease;
+    
+    /* REQUESTED FIXES: */
+    min-height: 620px;
+    transform: translateX(0px) translateY(0px);
 }
 
 .profile-pic {
@@ -115,7 +120,6 @@ body {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    
     margin-top: 25px;
     font-size: 0.85rem;
     color: var(--text-dim);
@@ -165,7 +169,6 @@ body {
     text-align: left;
 }
 
-/* Typography */
 .card-title {
     font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 2px;
 }
@@ -270,6 +273,94 @@ body {
 
 @keyframes pulse {
     0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; }
+}
+
+/* =========================================
+   6. FOOTER & VOLUME
+   ========================================= */
+.footer {
+    /* REQUESTED FIX: Transform */
+    transform: translateX(0px) translateY(10px);
+    margin-top: auto; /* Push to bottom if needed */
+}
+
+/* --- VOLUME CONTROLLER --- */
+.volume-control-container {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 32px;
+    max-width: 36px; /* Default: Only show icon */
+}
+
+/* Expand on Hover */
+.volume-control-container:hover {
+    max-width: 150px; /* Expand to show slider */
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.volume-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+}
+
+/* WRAPPER: Hide slider when collapsed */
+.volume-slider-wrapper {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    
+    opacity: 0; /* Hidden by default */
+    pointer-events: none;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Show slider when container is hovered */
+.volume-control-container:hover .volume-slider-wrapper {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.1s;
+}
+
+/* Custom Range Slider Styling */
+#volume-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* The Slider Handle (Invisible Thumb) */
+#volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    border: 0;
+    background: transparent;
+}
+
+#volume-slider:focus {
+    outline: none;
 }
 
 @media (max-width: 768px) {

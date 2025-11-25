@@ -9,18 +9,29 @@ if (typeof CONFIG === 'undefined') {
 let activeStartTimestamp = null;
 
 /* =========================================
-   1. UI INTERACTIONS
+   1. UI INTERACTIONS (Overlay & Volume)
    ========================================= */
 const overlay = document.getElementById('overlay');
 const video = document.getElementById('bg-video');
 const audio = document.getElementById('bg-audio');
 const card = document.getElementById('content-card');
-const muteBtn = document.getElementById('mute-btn');
 
-// Init Volume
-if (audio) audio.volume = 0.3;
+// --- VOLUME CONTROL ELEMENTS ---
+const volumeSlider = document.getElementById('volume-slider');
+const volumeBtn = document.getElementById('mute-btn');
+const volumeIcon = volumeBtn ? volumeBtn.querySelector('i') : null;
+let lastVolume = 0.3; 
 
-// Overlay
+// 1. Set Initial Volume
+if (audio) {
+    audio.volume = 0.3; 
+    if (volumeSlider) {
+        volumeSlider.value = 0.3;
+        updateSliderVisual(0.3);
+    }
+}
+
+// 2. Overlay Click Logic
 if (overlay) {
     const enterTextEl = document.getElementById('enter-text');
     if (enterTextEl && CONFIG.entertext) enterTextEl.textContent = CONFIG.entertext;
@@ -41,17 +52,55 @@ if (overlay) {
     });
 }
 
-// Mute Toggle
-if (muteBtn) {
-    muteBtn.addEventListener('click', () => {
-        if (audio.muted) {
-            audio.muted = false;
-            muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-        } else {
-            audio.muted = true;
-            muteBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-        }
+// 3. Volume Slider Logic
+if (volumeSlider && audio) {
+    volumeSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        audio.volume = val;
+        audio.muted = false; 
+        if (val > 0) lastVolume = val;
+        updateVolumeIcon(val);
+        updateSliderVisual(val);
     });
+}
+
+// 4. Mute/Unmute Click Logic
+if (volumeBtn && audio) {
+    volumeBtn.addEventListener('click', () => {
+        if (audio.muted || audio.volume === 0) {
+            audio.muted = false;
+            audio.volume = lastVolume > 0 ? lastVolume : 0.3;
+            if (volumeSlider) {
+                volumeSlider.value = audio.volume;
+                updateSliderVisual(audio.volume);
+            }
+        } else {
+            if (audio.volume > 0) lastVolume = audio.volume;
+            audio.muted = true;
+            if (volumeSlider) {
+                volumeSlider.value = 0;
+                updateSliderVisual(0);
+            }
+        }
+        updateVolumeIcon(audio.muted ? 0 : audio.volume);
+    });
+}
+
+function updateVolumeIcon(val) {
+    if (!volumeIcon) return;
+    if (audio.muted || val == 0) {
+        volumeIcon.className = 'fa-solid fa-volume-xmark';
+    } else if (val < 0.5) {
+        volumeIcon.className = 'fa-solid fa-volume-low';
+    } else {
+        volumeIcon.className = 'fa-solid fa-volume-high';
+    }
+}
+
+function updateSliderVisual(val) {
+    if (!volumeSlider) return;
+    const percentage = val * 100;
+    volumeSlider.style.background = `linear-gradient(to right, #ffffff ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`;
 }
 
 /* =========================================
@@ -66,7 +115,6 @@ async function fetchLastFmStats() {
         const userData = await userRes.json();
         const trackData = await trackRes.json();
 
-        // User Stats
         if (userData.user) {
             const imgUrl = userData.user.image[2]['#text'];
             const avatar = document.getElementById('lf-avatar');
@@ -76,7 +124,6 @@ async function fetchLastFmStats() {
             if (stats) stats.innerText = `${parseInt(userData.user.playcount).toLocaleString()} Scrobbles`;
         }
 
-        // Now Playing
         const track = trackData.recenttracks.track[0];
         const actionBtn = document.getElementById('lf-action');
         const isPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
@@ -103,11 +150,9 @@ async function fetchDiscordStatus() {
 
         const data = json.data;
         
-        // Identity
         const avatarUrl = `https://cdn.discordapp.com/avatars/${CONFIG.discordID}/${data.discord_user.avatar}.png`;
         document.querySelector('.card-avatar').src = avatarUrl;
         
-        // Decoration
         const decorationImg = document.getElementById('discord-decoration');
         if (data.discord_user.avatar_decoration_data) {
             const decoHash = data.discord_user.avatar_decoration_data.asset;
@@ -120,12 +165,9 @@ async function fetchDiscordStatus() {
         document.getElementById('discord-status-dot').className = `status-dot ${data.discord_status}`;
         document.getElementById('discord-username').innerText = data.discord_user.global_name || data.discord_user.username;
 
-        // Activity Logic
-        const validActivities = data.activities.filter(a => a.type !== 4);
-        
-        // Priority: Game/App > Spotify
-        let activity = validActivities.find(a => a.type === 0 || a.type === 1 || a.type === 3);
-        if (!activity) activity = validActivities.find(a => a.type === 2);
+        const allActivities = data.activities.filter(a => a.type !== 4);
+        let activity = allActivities.find(a => a.type === 0 || a.type === 1 || a.type === 3);
+        if (!activity) activity = allActivities.find(a => a.type === 2);
 
         const ui = {
             name: document.getElementById('discord-activity'),
@@ -142,7 +184,6 @@ async function fetchDiscordStatus() {
             if (!activeStartTimestamp) ui.timer.innerText = "";
 
             if (activity.type === 2 && data.spotify) {
-                // Spotify
                 ui.name.innerText = "Listening to Spotify";
                 ui.details.innerText = data.spotify.song;
                 ui.state.innerText = `by ${data.spotify.artist}`;
@@ -150,7 +191,6 @@ async function fetchDiscordStatus() {
                 ui.sImg.style.display = 'none';
                 ui.assets.style.display = 'block';
             } else {
-                // Game
                 ui.name.innerText = activity.name;
                 ui.details.innerText = activity.details || "";
                 ui.state.innerText = activity.state || "";
@@ -173,7 +213,6 @@ async function fetchDiscordStatus() {
                 }
             }
         } else {
-            // Idle
             ui.name.innerText = data.discord_status === 'dnd' ? "Do Not Disturb" : data.discord_status;
             ui.name.style.textTransform = 'capitalize';
             ui.details.innerText = "";
@@ -207,20 +246,33 @@ setInterval(() => {
    5. STATIC CONTENT & LINKS
    ========================================= */
 function updateStaticContent() {
-    // Page Title & Header
     if (CONFIG.name) {
         document.title = `@${CONFIG.name}`;
         const nameHeader = document.querySelector('.username');
         if (nameHeader) nameHeader.innerText = CONFIG.name;
     }
 
-    // Bio
     if (CONFIG.description) {
         const bioEl = document.getElementById('profile-bio');
         if (bioEl) bioEl.innerText = CONFIG.description;
     }
 
-    // Widget Links
+    // Location
+    if (CONFIG.location) {
+        const locEl = document.getElementById('location-display');
+        if (locEl) {
+            locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${CONFIG.location}`;
+            locEl.style.display = 'flex'; 
+        }
+    }
+
+    // Version
+    if (CONFIG.version) {
+        const verEl = document.getElementById('version-text');
+        if (verEl) verEl.innerText = CONFIG.version;
+    }
+
+    // Widget Links (Basic)
     const discordCard = document.querySelector('.discord-hero');
     if (discordCard && CONFIG.discordID) discordCard.href = `https://discord.com/users/${CONFIG.discordID}`;
 
@@ -231,7 +283,7 @@ function updateStaticContent() {
         if (lfTitle) lfTitle.innerText = CONFIG.lastFmUser;
     }
 
-    // Generate Links
+    // Link Generator
     const container = document.getElementById('links-container');
     if (container && CONFIG.links) {
         container.innerHTML = '';
@@ -247,25 +299,10 @@ function updateStaticContent() {
             container.appendChild(a);
         });
     }
-
-    // Set Location
-    if (CONFIG.location) {
-        const locEl = document.getElementById('location-display');
-        if (locEl) {
-            locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${CONFIG.location}`;
-            locEl.style.display = 'flex'; // Make visible
-        }
-    }
-
-    // Version Text
-    if (CONFIG.version) {
-        const verEl = document.getElementById('version-text');
-        if (verEl) verEl.innerText = CONFIG.version;
-    }
 }
 
 /* =========================================
-   6. TIME ALIVE COUNTER (Total Hours)
+   6. TIME ALIVE COUNTER
    ========================================= */
 function updateAliveTimer() {
     const timerEl = document.getElementById('alive-timer-el');
@@ -275,29 +312,58 @@ function updateAliveTimer() {
     const now = Date.now();
     const diff = now - birth;
 
-    // Calculate Time
     const totalSeconds = Math.floor(diff / 1000);
     const seconds = totalSeconds % 60;
     const totalMinutes = Math.floor(totalSeconds / 60);
     const minutes = totalMinutes % 60;
     const hours = Math.floor(totalMinutes / 60);
 
-    // Formatting
     const pSec = seconds.toString().padStart(2, '0');
     const pMin = minutes.toString().padStart(2, '0');
-
-    // Get Lablel from Config (Default to empty if missing)
     const label = CONFIG.aliveText || "";
 
-    // Render: "I have been alive for hhhh:mm:ss"
     timerEl.innerText = `${label}${hours}:${pMin}:${pSec}`;
 }
 
-// Run
+/* =========================================
+   7. INITIALIZATION & SAFETY CHECKS
+   ========================================= */
+function initWidgets() {
+    const discordCard = document.querySelector('.discord-hero');
+    const lastFmCard = document.querySelector('.lastfm-card');
+    const grid = document.querySelector('.grid-row');
+
+    let discordActive = false;
+    let lastFmActive = false;
+
+    // 1. Discord Check
+    if (CONFIG.discordID && CONFIG.discordID !== "") {
+        discordActive = true;
+        fetchDiscordStatus();
+        setInterval(fetchDiscordStatus, 5000);
+    } else {
+        if (discordCard) discordCard.style.display = 'none';
+    }
+
+    // 2. Last.fm Check
+    if (CONFIG.lastFmUser && CONFIG.lastFmKey && CONFIG.lastFmUser !== "") {
+        lastFmActive = true;
+        fetchLastFmStats();
+        setInterval(fetchLastFmStats, 10000);
+    } else {
+        if (lastFmCard) lastFmCard.style.display = 'none';
+    }
+
+    // 3. Layout Fixes
+    if (!discordActive && !lastFmActive) {
+        if (grid) grid.style.display = 'none';
+    } else if (!discordActive || !lastFmActive) {
+        if (grid) grid.style.gridTemplateColumns = '1fr';
+    }
+}
+
+// --- RUN ---
 updateStaticContent();
-fetchLastFmStats();
-fetchDiscordStatus();
+initWidgets();
 setInterval(updateAliveTimer, 1000);
 updateAliveTimer();
-setInterval(fetchLastFmStats, 10000);
-setInterval(fetchDiscordStatus, 5000);

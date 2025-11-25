@@ -11,7 +11,7 @@ const CONFIG = {
     // 1. PROFILE INFO
     name: "YOUR_DISPLAY_NAME_HERE",
     description: "YOUR_DESCRIPTION_HERE",
-    aliveText: "I have been alive for",
+    aliveText: "I have been alive for ",
     birthdate: "YYYY-MM-DD", // YYYY-MM-DD format
     location: "City, Country",
 
