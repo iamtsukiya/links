@@ -130,10 +130,13 @@ async function fetchLastFmStats() {
 
         if (isPlaying) {
             actionBtn.innerHTML = `<i class="fa-solid fa-music"></i> <span class="song-name-text">${track.name}</span>`;
-            actionBtn.style.color = "#43b581";
+            actionBtn.style.color = "#23a559";
         } else {
             actionBtn.innerHTML = `View Profile`;
-            actionBtn.style.color = "#b90000";
+            actionBtn.style.color = "#c5eaf4";
+            actionBtn.style.fontFamily = "'JetBrains Mono', monospace";
+            actionBtn.style.fontSize = '0.5rem';
+            actionBtn.style.fontWeight = '600';
         }
 
     } catch (e) { console.error("Last.fm Error:", e); }
