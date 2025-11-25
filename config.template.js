@@ -8,42 +8,34 @@
  */
 
 const CONFIG = {
-    // ------------------------------------
-    // 1. CORE IDENTITY & USERNAME
-    // ------------------------------------
-    
-    // The main display name shown in the page header.
+    // 1. PROFILE INFO
     name: "YOUR_DISPLAY_NAME_HERE",
+    description: "YOUR_DESCRIPTION_HERE",
+    aliveText: "I have been alive for",
+    birthdate: "YYYY-MM-DD", // YYYY-MM-DD format
 
-    // ------------------------------------
-    // 2. DISCORD & LANYARD API
-    // ------------------------------------
-    
-    // Your 18-digit Discord User ID.
-    // Lanyard uses this to fetch your live status and activity.
+    // 2. API KEYS & IDS
     discordID: "YOUR_DISCORD_USER_ID",
-
-    // ------------------------------------
-    // 3. LAST.FM WIDGET
-    // ------------------------------------
-
-    // Your Last.fm username (used to fetch playcounts and currently playing song).
     lastFmUser: "YOUR_LASTFM_USERNAME",
-    
-    // Last.fm Read-Only API Key (Public key for fetching data).
-    // Get this from: https://www.last.fm/api/account/create
     lastFmKey: "YOUR_LASTFM_API_KEY", 
-
-    // ------------------------------------
-    // 4. SOCIAL LINKS (ICON ROW GENERATOR)
-    // ------------------------------------
     
-    // List of objects used to generate the clickable icon row automatically.
-    // 'icon': FontAwesome class (e.g., 'fab fa-discord' or 'fas fa-music').
-    // 'url': Full HTTPS link.
-    // 'title': Text shown on hover.
+    // 3. UI SETTINGS
+    entertext: "click to enter",
+
+    // 4. SOCIAL LINKS
+    // --------------------------------------------------------------------------------
+    // HOW TO ADD A LINK:
+    // 1. Copy an existing line
+    // 2. Paste it below the last link
+    // 3. Change the URL and Title
+    //
+    // HOW TO FIND ICONS:
+    // Go to: https://fontawesome.com/icons
+    // - For brands (Twitter, Instagram), use "fab fa-brandname"
+    // - For standard icons (Home, Globe), use "fas fa-iconname"
+    // --------------------------------------------------------------------------------
     links: [
         { icon: "fab fa-discord", url: "https://discord.com/users/YOUR_DISCORD_USER_ID", title: "Discord" },
-        { icon: "fab fa-youtube", url: "https://youtube.com/@YOUR_CHANNEL", title: "YouTube" },
+        { icon: "fas fa-globe", url: "https://YOUR_WEBSITE_URL", title: "Website" },
     ]
 };

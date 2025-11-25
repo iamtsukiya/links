@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tsukiya's Personal Bio - Civil Engineering Student & osu! Player">
+    <meta name="description" content="Official link collection and profile directory">
     <meta name="theme-color" content="#0d0d0d">
     
-    <title>@tsukiya</title>
+    <title>Loading...</title>
     
     <link rel="stylesheet" href="style.css">
     
@@ -19,7 +19,7 @@
 <body>
 
     <div id="overlay">
-        <div class="enter-text">click to enter</div>
+        <div class="enter-text" id="enter-text">click to enter</div>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -34,13 +34,14 @@
         
         <header>
             <img src="assets/pfp.png" alt="Profile" class="profile-pic">
-            <h1 class="username">tsukiya</h1>
-            <p class="bio">Civil Eng Student @ VUT. Majoring in Procrastination & osu! Sometimes I race RC cars.</p>
+            <h1 class="username">Loading...</h1>
+            <p class="bio" id="profile-bio"></p>
+            <p class="alive-timer" id="alive-timer-el"></p>
         </header>
 
         <section class="grid-row">
 
-            <a href="https://discord.com/users/278137133183795201" target="_blank" class="card discord-hero">
+            <a href="#" target="_blank" class="card discord-hero">
                 <div class="card-bg-icon"><i class="fa-brands fa-discord"></i></div>
                 
                 <div class="card-flex">
@@ -51,7 +52,7 @@
                     </div>
 
                     <div class="card-info">
-                        <span id="discord-username" class="card-title">Tsukiya</span>
+                        <span id="discord-username" class="card-title">Loading...</span>
                         <span id="discord-activity" class="card-detail">Loading...</span>
                         <span id="discord-details" class="card-subtext"></span>
                         <span id="discord-state" class="card-subtext"></span>
@@ -65,7 +66,7 @@
                 </div>
             </a>
 
-            <a href="https://www.last.fm/user/iamtsukiya" target="_blank" class="card widget-hero lastfm-card">
+            <a href="#" target="_blank" class="card widget-hero lastfm-card">
                 <div class="card-watermark"><i class="fa-brands fa-lastfm"></i></div>
 
                 <div class="card-flex">
@@ -74,8 +75,8 @@
                     </div>
                     
                     <div class="card-info">
-                        <span class="card-title">iamtsukiya</span>
-                        <span class="card-detail" id="lf-stats">Loading stats...</span>
+                        <span class="card-title">Loading...</span>
+                        <span class="card-detail" id="lf-stats">Loading...</span>
                         <div class="lastfm-pill-btn" id="lf-action">
                             View Profile
                         </div>
@@ -85,8 +86,7 @@
 
         </section>
 
-        <nav class="links" id="links-container">
-            </nav>
+        <nav class="links" id="links-container"></nav>
 
         <div class="footer">
             <span id="mute-btn" style="cursor: pointer; font-size: 1.2rem; margin-top: 20px; display: inline-block;">
@@ -94,7 +94,8 @@
             </span>
             <br>
             <span style="font-size: 0.6rem; color: #444; margin-top: 10px; display: inline-block;">
-                powered by Monster Energy </span>
+                v1.0 
+            </span>
         </div>
 
     </main>

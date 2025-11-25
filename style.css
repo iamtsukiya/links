@@ -2,24 +2,19 @@
    1. VARIABLES & RESET
    ========================================= */
 :root {
-    /* Colors */
     --bg-color: #0d0d0d;
     --text-main: #ffffff;
     --text-dim: #cccccc;
     --text-dark: #888888;
     
-    /* Branding */
     --discord-bg: #292b2f;
-    --discord-hover: #2f3136;
     --lastfm-red: #e60033;
     
-    /* Status Indicators */
     --status-online: #23a559;
     --status-idle: #f0b232;
     --status-dnd: #f23f43;
     --status-offline: #80848e;
     
-    /* Glassmorphism */
     --glass-bg: rgba(20, 20, 20, 0.6);
     --glass-border: rgba(255, 255, 255, 0.08);
     --blur-amt: 12px;
@@ -79,7 +74,7 @@ body {
 .container {
     text-align: center;
     width: 100%;
-    max-width: 680px; /* Desktop Width */
+    max-width: 680px;
     padding: 20px;
     z-index: 10;
     opacity: 0;
@@ -105,8 +100,18 @@ body {
     line-height: 1.4; max-width: 90%; margin-inline: auto;
 }
 
+.alive-timer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dark);
+    margin-top: -15px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
 /* =========================================
-   4. CARDS (Discord & Last.fm)
+   4. CARDS (Widget System)
    ========================================= */
 .grid-row {
     display: grid;
@@ -136,7 +141,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Card Internals */
 .card-flex {
     display: flex; align-items: center; gap: 15px;
     position: relative; z-index: 2; height: 100%;
@@ -166,7 +170,7 @@ body {
 .card-detail { font-size: 0.8rem; color: var(--text-dim); }
 .card-subtext { font-size: 0.75rem; color: var(--text-dark); margin-top: 1px; }
 
-/* Avatars & Assets */
+/* Assets & Avatars */
 .avatar-wrapper {
     position: relative; width: 40px; height: 40px; flex-shrink: 0;
 }
@@ -176,20 +180,18 @@ body {
     position: relative; z-index: 1;
 }
 
+.avatar-decoration {
+    position: absolute; top: -15%; left: -15%;
+    width: 130%; height: 130%;
+    object-fit: cover; pointer-events: none; z-index: 2;
+}
+
 .status-dot {
     position: absolute; bottom: -2px; right: -2px;
     width: 14px; height: 14px; border-radius: 50%;
-    border: 3px solid var(--discord-bg);
-    z-index: 3;
+    border: 3px solid var(--discord-bg); z-index: 3;
 }
 
-/* Status Colors */
-.online { background-color: var(--status-online); }
-.idle   { background-color: var(--status-idle); }
-.dnd    { background-color: var(--status-dnd); }
-.offline{ background-color: var(--status-offline); }
-
-/* Rich Presence Assets (Images) */
 .game-asset-wrapper {
     position: relative; width: 55px; height: 55px;
     margin-left: auto; flex-shrink: 0;
@@ -209,7 +211,7 @@ body {
 .card-bg-icon { bottom: -15px; font-size: 4rem; }
 .card-watermark { top: -5px; font-size: 3.5rem; }
 
-/* Last.fm Specifics */
+/* Last.fm */
 .lastfm-pill-btn {
     display: inline-flex; align-items: center; gap: 6px;
     background: transparent; padding: 0;
@@ -222,7 +224,7 @@ body {
 }
 
 /* =========================================
-   5. LINKS (Horizontal Row)
+   5. LINKS & ANIMATION
    ========================================= */
 .links {
     display: flex; flex-wrap: wrap; justify-content: center;
@@ -243,12 +245,15 @@ body {
 }
 .link-item[title="osu!"]:hover { color: #ff66aa; text-shadow: 0 0 15px rgba(255,102,170,0.8); }
 
-/* =========================================
-   6. UTILITIES & ANIMATION
-   ========================================= */
 .monospace-timer {
     font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #fff; margin-top: 4px;
 }
+
+/* Status Colors */
+.online { background-color: var(--status-online); }
+.idle   { background-color: var(--status-idle); }
+.dnd    { background-color: var(--status-dnd); }
+.offline{ background-color: var(--status-offline); }
 
 @keyframes pulse {
     0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; }
