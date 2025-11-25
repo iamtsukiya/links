@@ -1,13 +1,14 @@
 /* =========================================
    CONFIGURATION & GLOBALS
+   (Data is loaded from config.js)
    ========================================= */
-const CONFIG = {
-    discordID: "278137133183795201",
-    lastFmUser: "iamtsukiya",
-    lastFmKey: "e24726c8331fbea24769718c32029b45"
-};
 
-// State trackers
+// Safety Check: Ensure CONFIG exists
+if (typeof CONFIG === 'undefined') {
+    console.error("Config file not found! Make sure config.js is linked in index.html");
+}
+
+// Global State Trackers
 let activeStartTimestamp = null;
 
 /* =========================================
@@ -187,3 +188,37 @@ fetchLastFmStats();
 fetchDiscordStatus();
 setInterval(fetchLastFmStats, 10000); // 10s poll
 setInterval(fetchDiscordStatus, 5000); // 5s poll
+
+/* =========================================
+   5. LINK GENERATOR
+   ========================================= */
+function generateLinks() {
+    const container = document.getElementById('links-container');
+    if (!container || !CONFIG.links) return;
+
+    // Clear existing (just in case)
+    container.innerHTML = '';
+
+    // Loop through the list in config.js
+    CONFIG.links.forEach(link => {
+        // Create the <a> tag
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = "_blank";
+        a.className = "link-item";
+        a.title = link.title;
+
+        // Create the <i> icon tag
+        const i = document.createElement('i');
+        // Split the icon class (e.g. "fab fa-discord") into parts
+        const classes = link.icon.split(' '); 
+        i.classList.add(...classes);
+
+        // Put the icon inside the link, and the link inside the container
+        a.appendChild(i);
+        container.appendChild(a);
+    });
+}
+
+// Run the generator immediately
+generateLinks();
