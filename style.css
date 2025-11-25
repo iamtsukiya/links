@@ -1,3 +1,50 @@
+/* --- RICH PRESENCE ASSETS (Right Side) --- */
+.game-asset-wrapper {
+    position: relative; /* Allows absolute positioning of the small circle */
+    width: 55px;        /* Slightly larger than before to show detail */
+    height: 55px;
+    margin-left: auto;  /* Push to right */
+    flex-shrink: 0;
+}
+
+.card-asset-large {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* Square with soft corners */
+    object-fit: cover;
+}
+
+.card-asset-small {
+    position: absolute;
+    bottom: -5px; right: -5px; /* Hang off the edge slightly */
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* Circle */
+    border: 3px solid #292b2f; /* Cutout effect (matches card bg) */
+    background-color: #292b2f;
+    object-fit: cover;
+}
+
+/* --- RICH TEXT --- */
+/* Make subtext lines stack cleanly */
+.card-subtext {
+    display: block; 
+    font-size: 0.7rem;
+    color: #b9bbbe;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px; /* Force ellipsis if lines get super long */
+}
+
+/* The Timer Style */
+.monospace-timer {
+    font-family: 'JetBrains Mono', monospace; /* Monospace numbers don't jitter */
+    font-size: 0.75rem;
+    color: #fff; /* White or Green #43b581 */
+    margin-top: 4px;
+}
 /* --- THE GLASS CARD BASE --- */
 .card {
     position: relative;

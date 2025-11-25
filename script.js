@@ -93,6 +93,10 @@ setInterval(fetchLastFmStats, 10000);
    ========================================= */
 const discordID = "278137133183795201"; 
 
+// Global variables to track state for the timer
+let activeStartTimestamp = null;
+let timerInterval = null;
+
 async function fetchDiscordStatus() {
     try {
         const response = await fetch(`https://api.lanyard.rest/v1/users/${discordID}`);
@@ -106,54 +110,84 @@ async function fetchDiscordStatus() {
             document.querySelector('.card-avatar').src = `https://cdn.discordapp.com/avatars/${discordID}/${avatarHash}.png`;
             document.getElementById('discord-status-dot').className = `status-dot ${discordData.discord_status}`; 
 
-            // 2. Content Elements
-            const title = document.getElementById('discord-username');
-            const detail = document.getElementById('discord-activity');
-            const subtext = document.getElementById('discord-subtext');
-            const assetImg = document.getElementById('discord-asset');
+            // 2. Text Elements
+            const username = document.getElementById('discord-username');
+            const activityName = document.getElementById('discord-activity');
+            const details = document.getElementById('discord-details');
+            const state = document.getElementById('discord-state');
+            const timer = document.getElementById('discord-timer');
+            
+            // 3. Asset Elements
+            const assetWrapper = document.getElementById('discord-asset-wrapper');
+            const largeImg = document.getElementById('discord-large-image');
+            const smallImg = document.getElementById('discord-small-image');
 
-            // 3. Filter Activities
+            // 4. Filter Activities
             const validActivities = discordData.activities.filter(a => a.type !== 4);
             const topActivity = validActivities[0];
 
             if (topActivity) {
+                // --- SETUP FOR TIMER ---
+                if (topActivity.timestamps && topActivity.timestamps.start) {
+                    activeStartTimestamp = topActivity.timestamps.start;
+                } else {
+                    activeStartTimestamp = null;
+                    timer.innerText = "";
+                }
+
                 // --- A. SPOTIFY ---
                 if (topActivity.type === 2 && discordData.spotify) {
-                    detail.innerText = discordData.spotify.song;
-                    subtext.innerText = `by ${discordData.spotify.artist}`;
+                    activityName.innerText = "Listening to Spotify";
+                    details.innerText = discordData.spotify.song;
+                    state.innerText = `by ${discordData.spotify.artist}`;
                     
-                    // Show Album Art
-                    assetImg.src = discordData.spotify.album_art_url;
-                    assetImg.style.display = 'block';
+                    // Spotify Art
+                    largeImg.src = discordData.spotify.album_art_url;
+                    smallImg.style.display = 'none'; // No small icon for Spotify usually
+                    assetWrapper.style.display = 'block';
                 } 
-                // --- B. GAME / APP ---
+                // --- B. GAME / APP (VS Code, osu!, etc) ---
                 else {
-                    detail.innerText = topActivity.name;
-                    subtext.innerText = topActivity.state || topActivity.details || "Playing";
+                    activityName.innerText = topActivity.name;
+                    details.innerText = topActivity.details || "";
+                    state.innerText = topActivity.state || "";
                     
-                    // Try to fetch Game Asset (Large Image)
-                    if (topActivity.assets && topActivity.assets.large_image) {
-                        // Construct Lanyard Asset URL
-                        let assetId = topActivity.assets.large_image;
-                        // Handle special 'spotify:' prefixes if they sneak in
-                        if (assetId.startsWith("spotify:")) assetId = assetId.replace("spotify:", "");
+                    // --- ASSETS LOGIC ---
+                    if (topActivity.assets) {
+                        assetWrapper.style.display = 'block';
                         
-                        assetImg.src = `https://cdn.discordapp.com/app-assets/${topActivity.application_id}/${assetId}.png`;
-                        assetImg.style.display = 'block';
+                        // 1. Large Image
+                        if (topActivity.assets.large_image) {
+                            let assetId = topActivity.assets.large_image;
+                            if (assetId.startsWith("spotify:")) assetId = assetId.replace("spotify:", "");
+                            largeImg.src = `https://cdn.discordapp.com/app-assets/${topActivity.application_id}/${assetId}.png`;
+                            largeImg.style.display = 'block';
+                        } else {
+                            largeImg.style.display = 'none';
+                        }
+
+                        // 2. Small Image (The Circular Overlay)
+                        if (topActivity.assets.small_image) {
+                            let assetId = topActivity.assets.small_image;
+                            smallImg.src = `https://cdn.discordapp.com/app-assets/${topActivity.application_id}/${assetId}.png`;
+                            smallImg.style.display = 'block';
+                        } else {
+                            smallImg.style.display = 'none';
+                        }
                     } else {
-                        // No image available? Hide the img tag
-                        assetImg.style.display = 'none';
+                        assetWrapper.style.display = 'none';
                     }
                 }
             } else {
                 // --- C. IDLE ---
-                // Reset to default
-                detail.innerText = discordData.discord_status === 'dnd' ? "Do Not Disturb" : discordData.discord_status;
-                subtext.innerText = "";
-                assetImg.style.display = 'none';
+                activityName.innerText = discordData.discord_status === 'dnd' ? "Do Not Disturb" : discordData.discord_status;
+                activityName.style.textTransform = 'capitalize';
                 
-                // Capitalize status
-                detail.style.textTransform = 'capitalize';
+                details.innerText = "";
+                state.innerText = "";
+                timer.innerText = "";
+                assetWrapper.style.display = 'none';
+                activeStartTimestamp = null;
             }
         }
     } catch (error) {
@@ -161,5 +195,29 @@ async function fetchDiscordStatus() {
     }
 }
 
+/* --- DEDICATED TIMER LOOP --- */
+// Runs every 1 second to update the clock smoothly
+setInterval(() => {
+    const timerEl = document.getElementById('discord-timer');
+    if (activeStartTimestamp && timerEl) {
+        const now = Date.now();
+        const diff = now - activeStartTimestamp;
+        
+        // Convert to HH:MM:SS
+        const seconds = Math.floor((diff / 1000) % 60);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const hours = Math.floor((diff / (1000 * 60 * 60)));
+
+        const pad = (num) => num.toString().padStart(2, '0');
+        
+        if (hours > 0) {
+            timerEl.innerText = `${pad(hours)}:${pad(minutes)}:${pad(seconds)} elapsed`;
+        } else {
+            timerEl.innerText = `${pad(minutes)}:${pad(seconds)} elapsed`;
+        }
+    }
+}, 1000);
+
+// Run Fetch immediately and every 5s
 fetchDiscordStatus();
-setInterval(fetchDiscordStatus, 10000);
+setInterval(fetchDiscordStatus, 5000);

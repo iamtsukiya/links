@@ -31,23 +31,32 @@
         <div class="grid-row">
 
             <a href="https://discord.com/users/278137133183795201" target="_blank" class="card discord-hero">
-                <div class="card-bg-icon"><i class="fa-brands fa-discord"></i></div>
-                
-                <div class="card-flex">
-                    <div class="avatar-wrapper">
-                        <img src="assets/pfp.png" alt="Discord Avatar" class="card-avatar">
-                        <div id="discord-status-dot" class="status-dot offline"></div>
-                    </div>
-
-                    <div class="card-info">
-                        <span id="discord-username" class="card-title">Tsukiya</span>
-                        <span id="discord-activity" class="card-detail">Loading...</span>
-                        <span id="discord-subtext" class="card-subtext"></span> 
-                    </div>
-
-                    <img id="discord-asset" src="" alt="" class="card-asset" style="display: none;">
+            <div class="card-bg-icon"><i class="fa-brands fa-discord"></i></div>
+            
+            <div class="card-flex">
+                <div class="avatar-wrapper">
+                    <img src="assets/pfp.png" alt="Discord Avatar" class="card-avatar">
+                    <div id="discord-status-dot" class="status-dot offline"></div>
                 </div>
-            </a>
+
+                <div class="card-info">
+                    <span id="discord-username" class="card-title">Tsukiya</span>
+                    
+                    <span id="discord-activity" class="card-detail">Loading...</span>
+                    
+                    <span id="discord-details" class="card-subtext"></span>
+                    
+                    <span id="discord-state" class="card-subtext"></span>
+                    
+                    <span id="discord-timer" class="card-subtext monospace-timer"></span>
+                </div>
+
+                <div class="game-asset-wrapper" id="discord-asset-wrapper" style="display: none;">
+                    <img id="discord-large-image" src="" alt="" class="card-asset-large">
+                    <img id="discord-small-image" src="" alt="" class="card-asset-small">
+                </div>
+            </div>
+        </a>
 
             <a href="https://www.last.fm/user/iamtsukiya" target="_blank" class="card widget-hero lastfm-card">
                 <div class="card-watermark"><i class="fa-brands fa-lastfm"></i></div>
