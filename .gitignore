@@ -1,0 +1,6 @@
+# Tell Git to ignore the file that holds my actual, private settings
+config.js
+
+# Optional: Ignore common development files
+node_modules/
+.DS_Store

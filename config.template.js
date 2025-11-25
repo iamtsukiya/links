@@ -13,7 +13,7 @@ const CONFIG = {
     // ------------------------------------
     
     // The main display name shown in the page header.
-    name: "tsukiya",
+    name: "YOUR_DISPLAY_NAME_HERE",
 
     // ------------------------------------
     // 2. DISCORD & LANYARD API
@@ -21,18 +21,18 @@ const CONFIG = {
     
     // Your 18-digit Discord User ID.
     // Lanyard uses this to fetch your live status and activity.
-    discordID: "278137133183795201",
+    discordID: "YOUR_DISCORD_USER_ID",
 
     // ------------------------------------
     // 3. LAST.FM WIDGET
     // ------------------------------------
 
     // Your Last.fm username (used to fetch playcounts and currently playing song).
-    lastFmUser: "iamtsukiya",
+    lastFmUser: "YOUR_LASTFM_USERNAME",
     
     // Last.fm Read-Only API Key (Public key for fetching data).
     // Get this from: https://www.last.fm/api/account/create
-    lastFmKey: "6a078360c2807a6b8c802f24e7b032d4", 
+    lastFmKey: "YOUR_LASTFM_API_KEY", 
 
     // ------------------------------------
     // 4. SOCIAL LINKS (ICON ROW GENERATOR)
@@ -43,7 +43,7 @@ const CONFIG = {
     // 'url': Full HTTPS link.
     // 'title': Text shown on hover.
     links: [
-        { icon: "fab fa-discord", url: "https://discord.com/users/278137133183795201", title: "Discord" },
-        { icon: "fab fa-youtube", url: "https://youtube.com/@iamtsukiya", title: "YouTube" },
+        { icon: "fab fa-discord", url: "https://discord.com/users/YOUR_DISCORD_USER_ID", title: "Discord" },
+        { icon: "fab fa-youtube", url: "https://youtube.com/@YOUR_CHANNEL", title: "YouTube" },
     ]
 };
