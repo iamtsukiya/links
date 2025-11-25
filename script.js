@@ -54,15 +54,6 @@ if (muteBtn) {
     });
 }
 
-// Set Location
-    if (CONFIG.location) {
-        const locEl = document.getElementById('location-display');
-        if (locEl) {
-            locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${CONFIG.location}`;
-            locEl.style.display = 'flex'; // Make visible
-        }
-    }
-
 /* =========================================
    2. LAST.FM WIDGET
    ========================================= */
@@ -255,6 +246,21 @@ function updateStaticContent() {
             a.appendChild(i);
             container.appendChild(a);
         });
+    }
+
+    // Set Location
+    if (CONFIG.location) {
+        const locEl = document.getElementById('location-display');
+        if (locEl) {
+            locEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${CONFIG.location}`;
+            locEl.style.display = 'flex'; // Make visible
+        }
+    }
+
+    // Version Text
+    if (CONFIG.version) {
+        const verEl = document.getElementById('version-text');
+        if (verEl) verEl.innerText = CONFIG.version;
     }
 }
 

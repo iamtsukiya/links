@@ -22,6 +22,7 @@ const CONFIG = {
     
     // 3. UI SETTINGS
     entertext: "click to enter",
+    version : "v1.0",
 
     // 4. SOCIAL LINKS
     // --------------------------------------------------------------------------------
