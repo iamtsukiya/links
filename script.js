@@ -116,6 +116,7 @@ async function fetchDiscordStatus() {
             const details = document.getElementById('discord-details');
             const state = document.getElementById('discord-state');
             const timer = document.getElementById('discord-timer');
+            username.innerText = discordData.discord_user.global_name || discordData.discord_user.username;
             
             // 3. Asset Elements
             const assetWrapper = document.getElementById('discord-asset-wrapper');

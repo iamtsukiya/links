@@ -121,27 +121,25 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* --- LAST.FM RED PILL BUTTON --- */
+/* --- LAST.FM ACTIVITY TEXT (Was Pill Button) --- */
 .lastfm-pill-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 6px;
-    background-color: #e60033; /* Last.fm Red */
-    color: white;
+    
+    /* Removed background, padding, and radius to make it plain text */
+    background-color: transparent; 
+    padding: 0;
+    border-radius: 0;
+    
     font-size: 0.75rem;
     font-weight: 700;
-    margin-top: 6px;
-    padding: 6px 12px;
-    border-radius: 20px; /* Pill shape */
-    width: fit-content; /* Only as wide as text */
-    transition: background 0.2s;
+    margin-top: 4px; /* Align closer to text like Discord card */
+    
+    width: 100%; /* ensure it takes full width for truncation */
 }
 
-/* Remove text hover effect from the old design */
-.card:hover .lastfm-pill-btn {
-    background-color: #ff1a4d; /* Brighter red on hover */
-}
+/* (The hover block that used to brighten the red background is deleted) */
 
 /* Ensure watermarks are subtle */
 .card-bg-icon, .card-watermark {
