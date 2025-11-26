@@ -104,7 +104,7 @@ function updateSliderVisual(val) {
 }
 
 /* =========================================
-   2. LAST.FM WIDGET
+   2. LAST.FM WIDGET (UPDATED)
    ========================================= */
 async function fetchLastFmStats() {
     try {
@@ -115,29 +115,48 @@ async function fetchLastFmStats() {
         const userData = await userRes.json();
         const trackData = await trackRes.json();
 
-        if (userData.user) {
-            const imgUrl = userData.user.image[2]['#text'];
-            const avatar = document.getElementById('lf-avatar');
-            if (imgUrl && avatar) avatar.src = imgUrl;
-            
-            const stats = document.getElementById('lf-stats');
-            if (stats) stats.innerText = `${parseInt(userData.user.playcount).toLocaleString()} Scrobbles`;
-        }
-
-        const track = trackData.recenttracks.track[0];
+        // DOM Elements
+        const avatar = document.getElementById('lf-avatar');
+        const stats = document.getElementById('lf-stats');
         const actionBtn = document.getElementById('lf-action');
-        const isPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
 
+        // Extract User Info (Index 3 = Extra Large Image)
+        const userPfp = userData.user ? userData.user.image[3]['#text'] : ''; 
+        const totalScrobbles = userData.user ? userData.user.playcount : '0';
+
+        // Extract Track Info
+        const track = trackData.recenttracks.track[0];
+        const isPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
+        const albumArt = track.image[3]['#text']; // Index 3 = Extra Large Image
+
+        // Update Stats
+        if (stats) stats.innerText = `${parseInt(totalScrobbles).toLocaleString()} Scrobbles`;
+
+        // LOGIC: Swap Layout based on Playing State
         if (isPlaying) {
+            // --- PLAYING STATE ---
             actionBtn.innerHTML = `<i class="fa-solid fa-music"></i> <span class="song-name-text">${track.name}</span>`;
             actionBtn.style.color = "var(--status-online)";
+            
+            // Set Album Art & Rounded Square
+            if (albumArt && avatar) {
+                avatar.src = albumArt;
+                avatar.style.borderRadius = "12px"; // Square with soft corners
+            }
         } else {
+            // --- IDLE STATE ---
             actionBtn.innerHTML = `View Profile`;
             actionBtn.style.color = "var(--text-main)";
             actionBtn.style.fontFamily = "'JetBrains Mono', monospace";
             actionBtn.style.fontSize = '0.5rem';
             actionBtn.style.fontWeight = '600';
             actionBtn.style.marginTop = '4px';
+
+            // Reset to User Avatar & Circle
+            if (userPfp && avatar) {
+                avatar.src = userPfp;
+                avatar.style.borderRadius = "50%"; // Perfect Circle
+            }
         }
 
     } catch (e) { console.error("Last.fm Error:", e); }

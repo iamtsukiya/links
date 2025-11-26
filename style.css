@@ -4,8 +4,8 @@
 :root {
     --bg-color: #0d0d0d;
     --text-main: #c5eaf4;
-    --text-dim: #82bac9;
-    --text-dark: #82bac9b7;
+    --text-dim: #4a7dbe;
+    --text-dark: #ffffffc5;
     
     --discord-bg: #292b2f;
     --lastfm-red: #e60033;
@@ -16,7 +16,7 @@
     --status-offline: #80848e;
     
     --glass-bg: #ffffff0a;
-    --glass-border: rgba(0, 0, 0, 0);
+    --glass-border: rgba(255, 255, 255, 0.1);
     --blur-amt: 16px;
 }
 
@@ -47,20 +47,32 @@ body {
     z-index: -1;
     transform: translate(-50%, -50%);
     object-fit: cover;
-    filter: brightness(0.4);
+    filter: brightness(0.8);
 }
 
 #overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: #000;
+    background-color: #000000bb;
+    backdrop-filter: blur(10px);
     z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: opacity 0.8s ease;
+}
+
+#halftone-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1; /* Sits above video (-2), below content (0) */
+    
+    /* The Magic: Creates a 3px dot pattern */
+    background-image: radial-gradient(rgba(0, 0, 0, 0.8) 0.6px, transparent 0.7px);
+    background-size: 2px 2px; 
 }
 
 .enter-text {
@@ -73,6 +85,8 @@ body {
    ========================================= */
 /* Main Content Card */
 .container {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     text-align: center;
     width: 100%;
     max-width: 680px;
@@ -80,9 +94,10 @@ body {
     z-index: 10;
     opacity: 0;
     transition: opacity 1s ease;
+    border-radius: 50px;
     
     /* Layout Fixes */
-    min-height: 575px;
+    min-height: 400px;
     transform: translateX(0px) translateY(0px);
 }
 
@@ -104,9 +119,9 @@ body {
     width: 150px; 
     height: 150px;
     border-radius: 50%;
-    border: 2.5px solid rgba(255, 255, 255, 0.2);
     object-fit: cover;
     display: block;
+    box-shadow:#000000 0px 0px 20px;
 }
 
 /* Text Container */
@@ -121,16 +136,17 @@ body {
     font-size: 2rem; 
     font-weight: 700; 
     margin: 0; 
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    text-shadow: 0 0 10px var(--text-main);
     line-height: 1;
 }
 
 .bio { 
-    color: var(--text-dim);
+    color: var(--text-main);
     font-size: 0.9rem; 
     line-height: 1.4; 
     margin: 0; 
     max-width: 100%;
+    text-shadow: 0 0 10px var(--text-main);
 }
 
 .alive-timer {
@@ -140,6 +156,7 @@ body {
     opacity: 0.8;
     letter-spacing: 1px;
     margin: 0;
+    text-shadow:#000000 0px 0px 5px;
 }
 
 .location-text {
@@ -149,9 +166,10 @@ body {
     gap: 8px;
     margin-top: 25px;
     font-size: 0.85rem;
-    color: var(--text-dim);
+    color: var(--text-main);
     font-weight: 600;
     letter-spacing: 0.5px;
+    text-shadow: 0 0 10px var(--text-main);
 }
 
 /* --- MOBILE RESPONSIVENESS --- */
@@ -224,8 +242,8 @@ body {
     display: block;
 }
 
-.card-detail { font-size: 0.6rem; color: var(--text-dim); }
-.card-subtext { font-size: 0.4rem; color: var(--text-dim); margin-top: 1px; }
+.card-detail { font-size: 0.6rem; color: var(--text-dim); text-shadow: 0px 0px 2px #000000; }
+.card-subtext { font-size: 0.4rem; color: var(--text-dim); margin-top: 1px; text-shadow: 0px 0px 2px #000000; }
 .monospace-timer { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; color: var(--status-online); margin-top: 4px; font-weight: 600;}
 
 /* Assets & Avatars */
@@ -309,14 +327,15 @@ body {
 .link-item {
     display: flex; align-items: center; justify-content: center;
     background: transparent; border: none; padding: 5px;
-    font-size: 1.8rem; color: rgba(255,255,255,0.6);
+    font-size: 1.8rem; color: var(--text-dim);
     transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
+    text-shadow: 0 0 15px var(--text-dim);
 }
 
 .link-item:hover {
-    color: #fff; transform: translateY(-4px) scale(1.1);
-    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+    color: var(--text-main); transform: translateY(-4px) scale(1.1);
+    text-shadow: 0 0 15px var(--text-main);
 }
 .link-item[title="osu!"]:hover { color: #ff66aa; text-shadow: 0 0 15px rgba(255,102,170,0.8); }
 
@@ -341,10 +360,13 @@ body {
 
 /* --- VOLUME CONTROLLER --- */
 .volume-control-container {
+    position: fixed;
     display: inline-flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-amt));
+    -webkit-backdrop-filter: blur(var(--blur-amt));
+    border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 5px 10px;
     transition: all 0.3s ease;
@@ -356,8 +378,8 @@ body {
 /* Expand on Hover */
 .volume-control-container:hover {
     max-width: 150px; /* Expand to show slider */
-    background: rgba(0, 0, 0, 0.6);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: #ffffff21;
+    border-color: #ffffff4b;
 }
 
 .volume-btn {
